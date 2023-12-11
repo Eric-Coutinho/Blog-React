@@ -4,5 +4,6 @@ const route = express.Router();
 
 route
     .post('/', AuthorController.create)
+    // .get('/:id', )
 
 module.exports = route;

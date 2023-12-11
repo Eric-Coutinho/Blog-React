@@ -1,5 +1,10 @@
 const { Author } = require("../model/author");
+const Article = require("../model/article");
+const authorController = require('../controller/authorController');
 const User = require('../model/login');
+
+const path = require('path');
+const fs = require('fs');
 
 class ArticleController
 {
