@@ -1,5 +1,5 @@
 const { Author } = require("../model/author");
-const User = require('../model/login');
+const User = require('../model/user');
 
 class AuthorController
 {
