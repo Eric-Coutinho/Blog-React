@@ -46,13 +46,31 @@ class ArticleController
     };
     static async likeArticle(req, res){
         const { id } = req.params;
+        const { userId } = req.body;
 
         if(!id)
             return res.status(400).send({ message: "No id provider" })
 
+        if(!userId)
+            return res.status(400).send({ message: "No user id provider" })
+
         try {
             const article = await Article.findById(id);
-            await Article.findByIdAndUpdate({_id: id}, {likes: ++article.likes})
+            let likesArray = article.likes;
+            let count = 0;
+
+            likesArray.forEach(user => {
+                if(userId == user)
+                {
+                    likesArray = likesArray.filter(item => item !== user);
+                    count++;
+                }
+            });
+
+            if(count == 0)
+                likesArray.push(userId)
+
+            await Article.findByIdAndUpdate({_id: id}, {likes: likesArray})
             return res.status(200).send();
         } catch (error) {
             ArticleController.createLog(error);

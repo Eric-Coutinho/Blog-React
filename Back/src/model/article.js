@@ -17,10 +17,10 @@ const Article = mongoose.model('Article',
         type: authorSchema,
         required: true
     },
-    likes: {
-        type: Number,
+    likes: [{
+        type: String,
         required: true
-    },
+    }],
     createdAt: {
         type: Date,
         required: true
