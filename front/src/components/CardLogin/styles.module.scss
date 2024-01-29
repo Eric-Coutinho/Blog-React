@@ -1,0 +1,16 @@
+.card{
+    position: relative;
+    top: 25vh;
+    &__header{
+        border: none !important;
+        background-color: white !important;
+    }
+    &__form{
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+        &__button{
+            width: 100%;
+        }
+    }
+}

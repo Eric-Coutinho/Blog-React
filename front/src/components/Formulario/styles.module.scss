@@ -1,0 +1,17 @@
+.form{
+    display: flex;
+    gap: 1.5rem;
+    flex-direction: column;
+
+    &__title{
+        font-size: 24px;
+    }
+
+    &__div{
+        place-self: end;
+
+        &__button{
+            width: 100%;
+        }
+    }
+}

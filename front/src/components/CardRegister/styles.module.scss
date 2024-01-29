@@ -1,0 +1,13 @@
+.card{
+    position: relative;
+    margin: 1rem 0;
+    &__header{
+        background-color: white;
+        border: none !important;
+    }
+    &__form{
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

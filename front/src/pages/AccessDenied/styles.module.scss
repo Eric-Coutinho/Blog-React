@@ -1,0 +1,15 @@
+.container{
+    background-color: rgb(255, 80, 80);
+    margin: 0 !important;
+    text-align: -webkit-center;
+    height: 100vh;
+}
+
+.card{
+    position: relative;
+    top: 40vh;
+    &__header{
+        border: none;
+        background-color: white;
+    }
+}

@@ -1,0 +1,13 @@
+.card{
+    margin-top: 5%;
+    &__title{
+        font-size: 18px;
+        text-align: center;
+        padding: 1rem 0;
+    }
+    &__body{
+        &__article{
+            text-align: justify;
+        }
+    }
+}
