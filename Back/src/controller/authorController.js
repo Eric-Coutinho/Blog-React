@@ -10,7 +10,7 @@ class AuthorController
             return res.status(400).send({ message: "Os campos não podem estar vazios"});
 
         if(name.length < 3)
-            return res.status(400).send({ message: "O nome noa pode ser menor que 3 caracteres"});
+            return res.status(400).send({ message: "O nome não pode ser menor que 3 caracteres"});
 
         if(email.length < 3)
             return res.status(400).send({ message: "Insira um e-mail válido" });
