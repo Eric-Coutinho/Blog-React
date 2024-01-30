@@ -3,7 +3,7 @@ const AuthorController = require('../controller/authorController');
 const route = express.Router();
 
 route
-    .post('/', AuthorController.create)
+    .post('/', AuthorController.register)
     // .get('/:id', )
 
 module.exports = route;

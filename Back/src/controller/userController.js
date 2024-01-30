@@ -1,14 +1,20 @@
 const User = require('../model/user');
 const jwt = require('jsonwebtoken');
 const { Author } = require('../model/author');
+const bcrypt = require('bcryptjs');
+var CryptoJS = require("crypto-js");
 require('dotenv').config();
-const CryptoJS = require("crypto-js");
 
 class AuthController
 {
     static async register(req, res)
     {
-        const { name, birth, email, password, confirmPassword } = req.body;
+
+        var bytes = CryptoJS.AES.decrypt(req.body.jsonCrypt, process.env.SECRET);
+        const decryptd = bytes.toString(CryptoJS.enc.Utf8);
+        const json = JSON.parse(decryptd);
+
+        const { name, birth, email, password, confirmPassword } = json;
 
         if(!name)
             return res.status(400).json({ message: "O nome é obrigatório." });
@@ -70,9 +76,12 @@ class AuthController
         if(!password)
             return res.status(422).json({ message: "A senha é obrigatória." });
 
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ login });
+
+        var bytes = CryptoJS.AES.decrypt(user.password, process.env.SECRET);
+        const decryptd2 = bytes.toString(CryptoJS.enc.Utf8);
         
-        if(!await bcrypt.compare(password, user.password))
+        if(decryptd2 != password)
             return res.status(422).send({ message: "Email ou senha não conferem."});
 
             try{

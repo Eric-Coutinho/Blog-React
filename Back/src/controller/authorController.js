@@ -1,36 +1,61 @@
 const { Author } = require("../model/author");
 const User = require('../model/user');
+var CryptoJS = require("crypto-js");
+require('dotenv').config();
 
 class AuthorController
 {
-    static async create(req, res){
-        const { name, email, birth } = req.body;
+    static async register(req, res)
+    {
+        var bytes = CryptoJS.AES.decrypt(req.body.jsonCrypt, process.env.SECRET);
+        const decryptd = bytes.toString(CryptoJS.enc.Utf8);
+        const json2 = JSON.parse(decryptd);
 
-        if(!name || !birth || !email)
-            return res.status(400).send({ message: "Os campos não podem estar vazios"});
+        const { name, birth, email, password, confirmPassword } = json2;
 
-        if(name.length < 3)
-            return res.status(400).send({ message: "O nome não pode ser menor que 3 caracteres"});
+        if(!name)
+            return res.status(400).json({ message: "O nome é obrigatório." });
 
-        if(email.length < 3)
-            return res.status(400).send({ message: "Insira um e-mail válido" });
+        if(!email)
+            return res.status(400).json({ message: "O e-mail é obrigatório." });
 
-        if(!email.includes('@'))
-            return res.status(400).send({ message: "Insira um e-mail válido" });
+        if(!password)
+            return res.status(400).json({ message: "A senha é obrigatória." });
 
-        const author = {
+        if(password != confirmPassword)
+            return res.status(400).json({ message: "As senhas não conferem." });
+
+        const userExists = await User.findOne({ email: email });
+
+        if(userExists)
+            return res.status(422).json({ message: "Insira outro e-mail"});
+
+        const passwordCrypt = CryptoJS.AES.encrypt(password, process.env.SECRET).toString();
+
+        const author = new Author({
             name,
             email,
             birth,
             createdAt: Date.now(),
-            updatedAt: Date.now(),
+            updatdAt: Date.now(),
             removedAt: null,
-        }
+        });
+
+        const user = new User({
+            login: email,
+            author,
+            email,
+            password: passwordCrypt,
+            createdAt: Date.now(),
+            updatdAt: Date.now(),
+            removedAt: null,
+        });
+
         try {
-            await Author.create(author)
-            return res.status(201).send({ message: "Autor cadastrado com sucesso" })
+            await User.create(user);
+            res.status(201).send({ message: "Usuário cadastrado com sucesso" });
         } catch (error) {
-            return res.status(500).send({ error: "Failed to get data" });
+            return res.status(500).send({ message: "Algo falhou", data: error.message })
         }
     }
 

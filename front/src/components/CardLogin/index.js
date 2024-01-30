@@ -3,29 +3,46 @@ import { Button, Card, Form } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import styles from './styles.module.scss';
 import { AlertContext } from "../../context/alert";
+import {SECRET} from "../../env";
+import CryptoJS from 'crypto-js';
+import axios from 'axios';
 
 export default function CardLogin(){
     const { setMessage, setShow, setVariant } = useContext(AlertContext);
 
     const navigate = useNavigate();
-    var [email, setEmail] = useState('');
-    var [pass, setPass] = useState('');
+    var [login, setLogin] = useState('');
+    var [password, setPassword] = useState('');
 
-    function handleSubmit(e){
+    async function handleSubmit(e){
         e.preventDefault();
         if(!formValid()) return
 
-        navigate('/home')
+        const json = {
+            login, password
+        }
+        try {
+            const jsonCrypt = CryptoJS.AES.encrypt(JSON.stringify(json), SECRET).toString();
+            var res = await axios.post('http://localhost:8080/api/user/login',{
+                jsonCrypt
+            })
+            sessionStorage.setItem('token', res.data.token);
+            navigate('/home')
+        } catch (error) {
+            setMessage('Erro ao se conectar');
+            setShow(true);
+            setVariant('danger');
+        }
     }
 
     function formValid(){
-        if(!email.includes('@')){
+        if(!login.includes('@')){
             setMessage('Insira um e-mail válidos')
             setShow(true);
             setVariant('danger')
             return false;
         }
-        if(email.length < 5){
+        if(login.length < 5){
             setMessage('Insira um e-mail válido')
             setShow(true);
             setVariant('danger')
@@ -46,14 +63,14 @@ export default function CardLogin(){
                     onSubmit={handleSubmit}
                 >
                     <Form.Control
-                        value={email}
+                        value={login}
                         placeholder="Insira seu e-mail"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setLogin(e.target.value)}
                     />
                     <Form.Control
-                        value={pass}
+                        value={password}
                         placeholder="Insira sua senha"
-                        onChange={(e) => setPass(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     <Button
                         className={styles.card__form__button}
