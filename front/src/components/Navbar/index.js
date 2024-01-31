@@ -7,6 +7,7 @@ import Right from './img/forward-right-small.svg';
 import { Outlet, useNavigate } from "react-router-dom";
 
 export default function NavBar(){
+    
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [listOpenStudent, setListOpenStudent] = useState(false);
     const [listOpenClass, setListOpenClass] = useState(false);
@@ -26,7 +27,7 @@ export default function NavBar(){
             <Row>            
                 <div 
                     className={styles.logo} 
-                    onClick={() => navigate('/main/dashboard')}
+                    onClick={() => navigate('/')}
                 />
                 <Void />
                 <Links>

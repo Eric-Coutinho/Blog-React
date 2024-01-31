@@ -19,10 +19,12 @@ export const Links = styled.div`
     align-self: center;
     display: flex;
     gap: 1rem;
+    justify-content: flex-end;
+    margin-right: 4em;
 `;
 
 export const NavMenu = styled.div`
-    display: flex;
+    display: inline-flex;
     align-self: center;
 `;
 
@@ -58,12 +60,14 @@ export const MenuLinks = styled.div`
     width: 90%;
     z-index: 3;
     transition: all 3s;
+    padding: 1.5em;
+    border-radius: 0 0 10px 10px;
 `
 
 export const Icon = styled.img`
     width: 35px;
     position: relative;
-    top: 10px;
+    top: -5px;
 `;
 
 export const Span = styled.span`
