@@ -44,6 +44,7 @@ class ArticleController
             return res.status(500).send({ error: "Falha ao salvar o artigo", data: error.message });
         }
     };
+
     static async likeArticle(req, res){
         const { id } = req.params;
         const { userId } = req.body;
