@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import jwt_decode from 'jwt-decode';
+import * as jwt_decode from 'jwt-decode';
 
 export default function ProtectedRoute({ errorPage, targetPage }){
     var [page, setPage] = useState(<></>);
@@ -12,10 +12,10 @@ export default function ProtectedRoute({ errorPage, targetPage }){
             return
         }
 
-        const decodeToken = jwt_decode(token)
+        const decodeToken = jwt_decode.jwtDecode(token)
         const { exp } = decodeToken;
 
-        if(exp+'000' - Date.now()){
+        if(exp+'000' - Date.now() < 0){
             setPage(errorPage)
             return
         }

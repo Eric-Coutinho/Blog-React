@@ -7,6 +7,7 @@ import {
 import { AiOutlineLike } from 'react-icons/ai'
 import styles from './styles.module.scss';
 import axios from 'axios';
+import * as jwt_decode from 'jwt-decode';
 
 export default function Post(){
     var [artigos, setArtigos] = useState([]);
@@ -18,7 +19,9 @@ export default function Post(){
     }
 
     async function handleClick(id){
-        await axios.post(`http://localhost:8080/api/article/like/${id}`, {userId: "65b8dd4bbdbef3828abefbd2"})
+        const token = sessionStorage.getItem('token');
+        const decodeToken = jwt_decode.jwtDecode(token)
+        await axios.post(`http://localhost:8080/api/article/like/${id}`, {userId: decodeToken.id})
         getPosts();
     }
 
